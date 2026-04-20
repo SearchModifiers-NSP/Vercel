@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Modifiers - ORM Services</title>
+    <link rel="icon" type="image/x-icon" href="https://www.searchmodifiers.com/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --primary-light: #FF8533;
+            --primary-dark: #E55A00;
+            --secondary: #FF8C42;
+            --white: #FFFFFF;
+            --off-white: #FFF8F5;
+            --gray-light: #F5F5F5;
+            --gray: #666666;
+            --gray-dark: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--white);
+            color: var(--gray-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 16px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 2px 20px rgba(255, 107, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 42px;
+            width: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--off-white) 0%, var(--white) 50%, #FFF5EB 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 140, 66, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--gray-dark);
+        }
+
+        .hero-text h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: var(--gray);
+            margin-bottom: 32px;
+            max-width: 500px;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .badge-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 16px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.35);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 107, 0, 0.45);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gray-dark);
+            padding: 16px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--gray-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(255, 107, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-card:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 24px;
+            background: var(--off-white);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.15);
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            top: 20%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 14px;
+            height: 14px;
+            background: var(--secondary);
+            bottom: 30%;
+            left: 5%;
+            animation-delay: 1s;
+        }
+
+        .shape-3 {
+            width: 10px;
+            height: 10px;
+            background: var(--primary-light);
+            top: 60%;
+            right: 5%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Services Section - Enhanced */
+        .services {
+            padding: 120px 0;
+            background: linear-gradient(180deg, var(--white) 0%, var(--off-white) 50%, var(--white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 140, 66, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--gray-dark);
+        }
+
+        .section-desc {
+            font-size: 18px;
+            color: var(--gray);
+        }
+
+        /* 3D Service Cards Container */
+        .services-showcase {
+            perspective: 2000px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .services-grid-3d {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            transform-style: preserve-3d;
+        }
+
+        /* 3D Service Card */
+        .service-card-3d {
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .service-card-inner {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 32px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.08),
+                0 1px 0 rgba(255, 255, 255, 0.8) inset;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .service-card-3d:hover .service-card-inner {
+            transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
+            box-shadow: 
+                20px 20px 60px rgba(0, 0, 0, 0.12),
+                0 0 40px rgba(255, 107, 0, 0.15);
+        }
+
+        /* 3D Background Element */
+        .service-card-3d::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.1) 0%, transparent 60%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: all 0.5s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .service-card-3d:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Glow effect */
+        .service-card-3d::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        .service-card-3d:hover::after {
+            opacity: 0.08;
+        }
+
+        /* Card Content */
+        .service-icon-3d {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 36px;
+            transform: translateZ(30px);
+            transition: all 0.5s ease;
+            box-shadow: 
+                0 10px 30px rgba(255, 107, 0, 0.3),
+                0 5px 15px rgba(255, 107, 0, 0.2);
+        }
+
+        .service-card-3d:hover .service-icon-3d {
+            transform: translateZ(50px) scale(1.1);
+            box-shadow: 
+                0 15px 40px rgba(255, 107, 0, 0.4),
+                0 10px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .service-card-3d h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--gray-dark);
+            transform: translateZ(20px);
+            transition: all 0.5s ease;
+        }
+
+        .service-card-3d:hover h3 {
+            color: var(--primary);
+            transform: translateZ(30px);
+        }
+
+        .service-card-3d p {
+            font-size: 15px;
+            color: var(--gray);
+            line-height: 1.7;
+            transform: translateZ(10px);
+            transition: all 0.5s ease;
+        }
+
+        .service-card-3d:hover p {
+            transform: translateZ(20px);
+        }
+
+        /* Floating elements on card */
+        .card-float-element {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .card-float-element.top-right {
+            top: -20px;
+            right: -20px;
+        }
+
+        .card-float-element.bottom-left {
+            bottom: -20px;
+            left: -20px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .service-card-3d:hover .card-float-element {
+            opacity: 0.15;
+        }
+
+        .service-card-3d:hover .card-float-element.top-right {
+            top: -10px;
+            right: -10px;
+        }
+
+        .service-card-3d:hover .card-float-element.bottom-left {
+            bottom: -10px;
+            left: -10px;
+        }
+
+        /* Arrow indicator */
+        .service-arrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.4s ease;
+        }
+
+        .service-card-3d:hover .service-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .service-arrow svg {
+            transition: transform 0.3s ease;
+        }
+
+        .service-card-3d:hover .service-arrow svg {
+            transform: translateX(5px);
+        }
+
+        /* About Section */
+        .about {
+            padding: 120px 0;
+            background: linear-gradient(135deg, var(--off-white) 0%, var(--white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--gray-dark);
+        }
+
+        .about-text h2 span {
+            color: var(--primary);
+        }
+
+        .about-text p {
+            font-size: 17px;
+            color: var(--gray);
+            margin-bottom: 32px;
+            line-height: 1.8;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-check {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .feature-check span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: 0 30px 60px rgba(255, 107, 0, 0.15);
+            position: relative;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .about-years {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .years-badge {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px 32px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .years-badge .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .years-badge .text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .about-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .about-stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--off-white);
+            border-radius: 12px;
+        }
+
+        .about-stat .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .about-stat .label {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* Why Choose Us */
+        .why-us {
+            padding: 120px 0;
+            background: var(--white);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+        }
+
+        .why-card {
+            text-align: center;
+            padding: 40px 28px;
+            background: var(--off-white);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .why-card:hover {
+            transform: translateY(-8px);
+            background: white;
+            box-shadow: 0 20px 40px rgba(255, 107, 0, 0.1);
+        }
+
+        .why-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+        }
+
+        .why-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--gray-dark);
+        }
+
+        .why-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .cta-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn-white {
+            background: white;
+            color: var(--primary);
+            padding: 18px 48px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gray-dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand .logo {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--gray-dark);
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 44px;
+            }
+
+            .hero-text p {
+                margin: 0 auto 24px;
+            }
+
+            .hero-badges {
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-card {
+                transform: none;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .services-grid-3d {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-text h1 {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .services-grid-3d {
+                grid-template-columns: 1fr;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-content h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">
+                    <img src="https://www.searchmodifiers.com/images/logo.png" alt="Search Modifiers Logo">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#why-us">Why Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <a href="#contact" class="cta-btn">Get Started</a>
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Build Your Brand's <span>Online Reputation</span> With Expert ORM Services</h1>
+                    <p>Search Modifiers is a leading ORM company with 10+ years of experience helping businesses enhance their digital presence, manage online reputation, and achieve sustainable growth.</p>
+                    <div class="hero-badges">
+                        <div class="badge">
+                            <div class="badge-icon">✓</div>
+                            10+ Years Experience
+                        </div>
+                        <div class="badge">
+                            <div class="badge-icon">✓</div>
+                            500+ Clients Worldwide
+                        </div>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn-primary">
+                            Start Your Project
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="#services" class="btn-secondary">
+                            Our Services
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-card">
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">10+</div>
+                                <div class="stat-label">Years of Excellence</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">Happy Clients</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">98%</div>
+                                <div class="stat-label">Success Rate</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Support Available</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="floating-shapes">
+                        <div class="shape shape-1"></div>
+                        <div class="shape shape-2"></div>
+                        <div class="shape shape-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section - Enhanced with 3D -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">OUR SERVICES</span>
+                <h2 class="section-title">Comprehensive Digital Solutions</h2>
+                <p class="section-desc">We offer a complete suite of digital marketing and ORM services to elevate your brand's online presence and drive measurable results.</p>
+            </div>
+            <div class="services-showcase">
+                <div class="services-grid-3d">
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">🎯</div>
+                            <h3>SEO</h3>
+                            <p>Search engine optimization services to improve your website's visibility and drive organic traffic with proven strategies.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">🛡️</div>
+                            <h3>ORM</h3>
+                            <p>Online reputation management to protect and enhance your brand's digital image across all platforms.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">📱</div>
+                            <h3>Social Media</h3>
+                            <p>Strategic social media management to build engaged communities and grow your brand presence.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">🎨</div>
+                            <h3>Website Designing</h3>
+                            <p>Professional website design services creating stunning, responsive, and user-friendly digital experiences.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">🤖</div>
+                            <h3>AI Results Optimization</h3>
+                            <p>Optimize your content for AI platforms and search engines to maximize visibility in the AI era.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">✍️</div>
+                            <h3>Content Writing</h3>
+                            <p>High-quality, SEO-optimized content that engages your audience and boosts your search rankings.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">📰</div>
+                            <h3>PR Publications</h3>
+                            <p>Strategic public relations and media publications to build credibility and brand authority.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">📊</div>
+                            <h3>Analytics & Reporting</h3>
+                            <p>Comprehensive analytics and transparent reporting to track performance and optimize strategies.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card-3d">
+                        <div class="card-float-element top-right"></div>
+                        <div class="card-float-element bottom-left"></div>
+                        <div class="service-card-inner">
+                            <div class="service-icon-3d">💡</div>
+                            <h3>Digital Consulting</h3>
+                            <p>Expert digital marketing consulting to help you navigate the ever-changing online landscape.</p>
+                            <div class="service-arrow">
+                                Learn More
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Empowering Brands with <span>10+ Years</span> of Digital Excellence</h2>
+                    <p>Search Modifiers has been at the forefront of digital marketing and ORM services since 2014. Our team of experts is dedicated to helping businesses of all sizes build strong online presences and manage their reputations effectively.</p>
+                    <p>We believe in delivering measurable results through data-driven strategies and personalized solutions tailored to each client's unique needs.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <div class="feature-check"><span>✓</span></div>
+                            <span>Proven Track Record</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="feature-check"><span>✓</span></div>
+                            <span>Expert Team</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="feature-check"><span>✓</span></div>
+                            <span>Custom Strategies</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="feature-check"><span>✓</span></div>
+                            <span>Transparent Reporting</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="about-card">
+                        <div class="about-years">
+                            <div class="years-badge">
+                                <div class="number">10+</div>
+                                <div class="text">Years</div>
+                            </div>
+                            <div>
+                                <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 8px;">Of Excellence</h3>
+                                <p style="color: var(--gray); font-size: 15px;">Delivering top-notch digital solutions since 2014</p>
+                            </div>
+                        </div>
+                        <div class="about-stats-grid">
+                            <div class="about-stat">
+                                <div class="number">500+</div>
+                                <div class="label">Projects Completed</div>
+                            </div>
+                            <div class="about-stat">
+                                <div class="number">98%</div>
+                                <div class="label">Client Satisfaction</div>
+                            </div>
+                            <div class="about-stat">
+                                <div class="number">50+</div>
+                                <div class="label">Team Members</div>
+                            </div>
+                            <div class="about-stat">
+                                <div class="number">24/7</div>
+                                <div class="label">Support</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us" id="why-us">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">WHY CHOOSE US</span>
+                <h2 class="section-title">The Search Modifiers Advantage</h2>
+                <p class="section-desc">Partner with a team that truly understands your business needs and delivers results that matter.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">⭐</div>
+                    <h3>Proven Expertise</h3>
+                    <p>10+ years of industry experience delivering successful campaigns for diverse clients.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🎯</div>
+                    <h3>Result-Oriented</h3>
+                    <p>Focused on delivering measurable ROI and tangible business growth.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">⚡</div>
+                    <h3>Quick Turnaround</h3>
+                    <p>Fast and efficient service delivery without compromising on quality.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🤝</div>
+                    <h3>Dedicated Support</h3>
+                    <p>24/7 customer support to address all your queries and concerns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Online Presence?</h2>
+                <p>Let's discuss how we can help your brand achieve its digital marketing goals. Reach out to us today!</p>
+                <a href="mailto:hello@searchmodifiers.com" class="cta-btn-white">
+                    Get In Touch
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <img src="https://www.searchmodifiers.com/images/logo.png" alt="Search Modifiers Logo" style="height: 42px; width: auto; filter: brightness(0) invert(1);">
+                    </a>
+                    <p>Your trusted partner for ORM and digital marketing services. Building strong online reputations since 2014.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/searchmodifiers/" target="_blank" class="social-link" title="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/company/search-modifiers" target="_blank" class="social-link" title="LinkedIn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">SEO</a></li>
+                        <li><a href="#services">ORM</a></li>
+                        <li><a href="#services">Social Media</a></li>
+                        <li><a href="#services">Website Design</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#why-us">Why Choose Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:hello@searchmodifiers.com">hello@searchmodifiers.com</a></li>
+                        <li><a href="tel:+919990074072">+91 99900 74072</a></li>
+                        <li><a href="#">24/7 Support Available</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Search Modifiers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        const cards3d = document.querySelectorAll('.service-card-3d');
+        cards3d.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.querySelector('.service-card-inner').style.transform = 
+                    `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.querySelector('.service-card-inner').style.transform = 
+                    'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+            });
+        });
+    </script>
+</body>
+</html>
